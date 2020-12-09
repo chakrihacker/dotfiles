@@ -10,3 +10,19 @@
 	# Same as above, but with a diff stat instead of just names
 	# (better for interactive use)
 	stat = "!f() { review_base=${1-master}; git diff --stat $(git merge-base HEAD \"$review_base\"); }; f"
+	# Open all files changed since REVIEW_BASE in Vim tabs
+	# Then, run fugitive's :Gdiff in each tab, and finally
+	# tell vim-gitgutter to show +/- for changes since REVIEW_BASE
+	review = "!f() { review_base=${1-master}; vim -p $(git files) +\"tabdo Gdiff $review_base\" +\"let g:gitgutter_diff_base = '$review_base'\"; }; f"
+
+	# Same as the above, except specify names of files as arguments,
+	# instead of opening all files:
+	# git reviewone foo.js bar.js
+	reviewone = "!f() { \
+		if [ $# -lt 2 ]; then \
+			echo Usage: git reviewone branch_name file1 file2; \
+		else\
+			review_base=${1}; \
+			vim -p ${@:2} +\"tabdo Gdiff $review_base\" +\"let g:gitgutter_diff_base = '$review_base'\"; \
+		fi;\
+		}; f"
