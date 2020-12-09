@@ -1,0 +1,12 @@
+[user]
+	email = chanty.chakravarthy@gmail.com
+	name = Subramanya Chakravarthy
+
+[alias]
+	# list files which have changed since REVIEW_BASE
+	# (REVIEW_BASE defaults to 'master' as default argument is passed)
+	files = "!f() { review_base=${1-master}; git diff --name-only $(git merge-base HEAD \"$review_base\"); }; f"
+
+	# Same as above, but with a diff stat instead of just names
+	# (better for interactive use)
+	stat = "!f() { review_base=${1-master}; git diff --stat $(git merge-base HEAD \"$review_base\"); }; f"
